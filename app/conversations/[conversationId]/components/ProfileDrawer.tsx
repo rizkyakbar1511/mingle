@@ -5,7 +5,7 @@ import useOtherUser from "@/app/hooks/useOtherUser";
 import { Dialog, Transition } from "@headlessui/react";
 import { Conversation, User } from "@prisma/client";
 import { format } from "date-fns";
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { IoClose, IoTrash } from "react-icons/io5";
 import ConfirmModal from "./ConfirmModal";
 import AvatarGroup from "@/app/components/AvatarGroup";
@@ -43,9 +43,8 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, data }) 
 
   return (
     <>
-      <ConfirmModal isOpen={confirmOpen} onClose={() => setConfirmOpen(false)} />
       <Transition.Root show={isOpen} as={Fragment}>
-        <Dialog className="relative z-50" as="div" onClose={onClose}>
+        <Dialog className="relative z-40" as="div" onClose={onClose}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-500"
@@ -69,6 +68,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, data }) 
                   leaveTo="translate-x-full"
                 >
                   <Dialog.Panel className="w-screen max-w-md pointer-events-auto">
+                    <ConfirmModal isOpen={confirmOpen} onClose={() => setConfirmOpen(false)} />
                     <div className="flex flex-col h-full py-6 overflow-y-scroll bg-white shadow-xl">
                       <div className="px-4 sm:px-6">
                         <div className="flex items-start justify-end">

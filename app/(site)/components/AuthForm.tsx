@@ -48,6 +48,9 @@ const AuthForm = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
+    const id = toast.loading("Logging you in...", {
+      id: "clipboard",
+    });
 
     if (variant === "REGISTER") {
       axios
@@ -64,11 +67,11 @@ const AuthForm = () => {
       })
         .then((callback) => {
           if (callback?.error) {
-            toast.error("Invalid credentials");
+            toast.error("Invalid credentials", { id });
           }
 
           if (callback?.ok && !callback?.error) {
-            toast.success("Logged in!");
+            toast.success("Logged in!", { id });
             router.push("/users");
           }
         })
