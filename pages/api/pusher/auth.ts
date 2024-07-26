@@ -12,6 +12,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
 
   const sockedId = request.body.socket_id;
   const channel = request.body.channel_name;
+  console.log(channel, "CHANNEL NAME");
   const data = {
     user_id: session.user.email,
   };

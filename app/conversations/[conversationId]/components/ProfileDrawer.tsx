@@ -2,7 +2,7 @@
 
 import Avatar from "@/app/components/Avatar";
 import useOtherUser from "@/app/hooks/useOtherUser";
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/react";
 import { Conversation, User } from "@prisma/client";
 import { format } from "date-fns";
 import { Fragment, useMemo, useState } from "react";
@@ -43,9 +43,9 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, data }) 
 
   return (
     <>
-      <Transition.Root show={isOpen} as={Fragment}>
+      <Transition show={isOpen} as={Fragment}>
         <Dialog className="relative z-40" as="div" onClose={onClose}>
-          <Transition.Child
+          <TransitionChild
             as={Fragment}
             enter="ease-out duration-500"
             enterFrom="opacity-0"
@@ -55,11 +55,11 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, data }) 
             leaveTo="opacity-0"
           >
             <div className="fixed inset-0 bg-black bg-opacity-40" />
-          </Transition.Child>
+          </TransitionChild>
           <div className="fixed inset-0 overflow-hidden">
             <div className="absolute inset-0 overflow-hidden">
               <div className="fixed inset-y-0 right-0 flex max-w-full pl-10 pointer-events-none">
-                <Transition.Child
+                <TransitionChild
                   as={Fragment}
                   enter="transform transition ease-in-out duration-500"
                   enterFrom="translate-x-full"
@@ -67,7 +67,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, data }) 
                   leave="transform transition ease-in-out duration-500"
                   leaveTo="translate-x-full"
                 >
-                  <Dialog.Panel className="w-screen max-w-md pointer-events-auto">
+                  <DialogPanel className="w-screen max-w-md pointer-events-auto">
                     <ConfirmModal isOpen={confirmOpen} onClose={() => setConfirmOpen(false)} />
                     <div className="flex flex-col h-full py-6 overflow-y-scroll bg-white shadow-xl">
                       <div className="px-4 sm:px-6">
@@ -86,7 +86,13 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, data }) 
                       </div>
                       <div className="relative flex-1 px-4 mt-6 sm:px-6">
                         <div className="flex flex-col items-center">
-                          <div className="mb-2">{data.isGroup ? <AvatarGroup users={data.users} /> : <Avatar user={otherUser} />}</div>
+                          <div className="mb-2">
+                            {data.isGroup ? (
+                              <AvatarGroup users={data.users} />
+                            ) : (
+                              <Avatar user={otherUser} />
+                            )}
+                          </div>
                           <div>{title}</div>
                           <div className="text-sm text-gray-500">{statusText}</div>
                           <div className="flex gap-10 my-8">
@@ -104,7 +110,9 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, data }) 
                             <dl className="px-4 space-y-8 sm:space-y-6 sm:px-6">
                               {data.isGroup && (
                                 <div>
-                                  <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0">Emails</dt>
+                                  <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0">
+                                    Emails
+                                  </dt>
                                   <dd className="mt-1 text-sm text-gray-900 sm:col-span-2">
                                     {data.users.map((user) => user.email).join(", ")}
                                   </dd>
@@ -112,15 +120,21 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, data }) 
                               )}
                               {!data.isGroup && (
                                 <div>
-                                  <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0">Email</dt>
-                                  <dd className="mt-1 text-sm text-gray-900 sm:col-span-2">{otherUser.email}</dd>
+                                  <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0">
+                                    Email
+                                  </dt>
+                                  <dd className="mt-1 text-sm text-gray-900 sm:col-span-2">
+                                    {otherUser.email}
+                                  </dd>
                                 </div>
                               )}
                               {!data.isGroup && (
                                 <>
                                   <hr />
                                   <div>
-                                    <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0">Joined</dt>
+                                    <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0">
+                                      Joined
+                                    </dt>
                                     <dd className="mt-1 text-sm text-gray-900 sm:col-span-2">
                                       <time dateTime={joinedDate}>{joinedDate}</time>
                                     </dd>
@@ -132,13 +146,13 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, data }) 
                         </div>
                       </div>
                     </div>
-                  </Dialog.Panel>
-                </Transition.Child>
+                  </DialogPanel>
+                </TransitionChild>
               </div>
             </div>
           </div>
         </Dialog>
-      </Transition.Root>
+      </Transition>
     </>
   );
 };
